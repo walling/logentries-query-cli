@@ -31,7 +31,7 @@ logentries-query --log=my_log --time=20min '/error/i' | grep http_status
 To install globally:
 
 ```bash
-npm install -g logentries-query-stream
+npm install -g logentries-query-cli
 ```
 
 The command is called `logentries-query`. You can optionally [setup an alias](#alias).
