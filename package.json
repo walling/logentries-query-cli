@@ -1,0 +1,39 @@
+{
+  "name": "logentries-query-cli",
+  "version": "0.1.0",
+  "description": "CLI tool to query and stream logs from Logentries.",
+  "bin": {
+    "logentries-query": "./index.js"
+  },
+  "scripts": {
+    "test": "echo 'No tests'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walling/logentries-query-cli.git"
+  },
+  "keywords": [
+    "logentries",
+    "stream",
+    "query",
+    "download",
+    "logs"
+  ],
+  "author": "Bjarke Walling <bwp@bwp.dk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/walling/logentries-query-cli/issues"
+  },
+  "homepage": "https://github.com/walling/logentries-query-cli#readme",
+  "dependencies": {
+    "cast-array": "^1.0.1",
+    "chalk": "^1.1.3",
+    "logentries-query-stream": "^0.1.1",
+    "moment": "^2.18.1",
+    "parse-duration": "^0.1.1",
+    "yargs": "^8.0.2"
+  },
+  "engines": {
+    "node": ">=6"
+  }
+}
