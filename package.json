@@ -17,7 +17,8 @@
     "stream",
     "query",
     "download",
-    "logs"
+    "logs",
+    "cli"
   ],
   "author": "Bjarke Walling <bwp@bwp.dk>",
   "license": "MIT",
