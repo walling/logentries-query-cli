@@ -1,11 +1,48 @@
 #!/usr/bin/env node
 'use strict';
 
-const args      = require('yargs').argv;
+const pkg   = require('./package.json');
+const yargs = require('yargs')
+    .alias('h', 'help')
+    .alias('v', 'version')
+    .alias('l', 'log')
+    .alias('t', 'time')
+    .alias('s', 'start')
+    .alias('e', 'end')
+    .alias('u', 'utc')
+    .alias('f', 'format')
+    .alias('T', 'show-time')
+    .alias('N', 'log-name')
+    .alias('L', 'limit')
+    .string('log')
+    .boolean('utc')
+    .boolean('show-time')
+    .boolean('log-name')
+    .default('log-name', undefined)
+    .number('limit')
+    .string('time')
+    .string('start')
+    .string('end')
+    .string('format')
+    .usage('Query log records in Logentries.\nUsage: $0 -l log1 [-l log2 ...] -t time query')
+    .describe({
+        'log'       : 'Choose one or more logs to query',
+        'time'      : 'Duration to query',
+        'start'     : 'Start time to query from',
+        'end'       : 'End time to query to',
+        'utc'       : 'Use UTC as input and output format',
+        'format'    : 'Format each log record',
+        'show-time' : 'Show received time for each log record',
+        'log-name'  : 'Show name of log for each log record',
+        'limit'     : 'Maximum number of records to display'
+    })
+    .version(pkg.version)
+    .help();
+
+const args      = yargs.argv;
 const chalk     = require('chalk');
 const path      = require('path');
 const os        = require('os');
-const pkg       = require('./package.json');
 const castArray = require('cast-array');
 
 const configFile = path.join(os.homedir(), '.'+pkg.name, 'config.json');
@@ -76,27 +113,23 @@ if (logList.length === 0) {
 
 // Parse `--log` arguments. If none given and only one log is defined in config,
 // we use that as default.
-let argsLog = [];
-if ('log' in args) {
-    argsLog = castArray(args.log).map(alias => ''+alias);
-} else {
-    if (logList.length === 1) {
-        argsLog = [ logList[0] ];
-    }
-}
+let argsLog = args.log !== undefined ?
+    castArray(args.log).map(alias => ''+alias) :
+    [];
 
 // Go through list of logs. If any of them are unknown, we display an error.
 let argsLogNotFound = argsLog.filter(alias => !logs[alias]);
 if (argsLogNotFound.length > 0) {
-    console.error('Unknown log alias%s: %s',
+    console.error('Unknown log alias%s: %s\n',
         argsLogNotFound.length > 1 ? 'es' : '',
         argsLogNotFound.map(alias => alias || '(empty)').join(', '));
+    yargs.showHelp();
     process.exit(1);
 }
 
 // If no logs are selected, we show a list of all logs in config.
 if (argsLog.length === 0) {
-    console.log('\nLogs:\n\n%s\n',
+    console.log('\nLogs:\n\n%s\n\nSpecify --help for available options.\n',
         Object.keys(logs)
             .map(alias => ' - ' + alias + ' ' +
                 chalk.gray(logs[alias].logset+'/'+logs[alias].log))
