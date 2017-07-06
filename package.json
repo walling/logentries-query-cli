@@ -1,6 +1,6 @@
 {
   "name": "logentries-query-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI tool to query and stream logs from Logentries.",
   "bin": {
     "logentries-query": "./index.js"
